@@ -8,5 +8,5 @@
     "skipLibCheck": true,
     "lib": ["ES2022", "WebWorker"]
   },
-  "include": ["src/worker.ts", "src/standalone-worker.ts"]
+  "include": ["src/worker.ts", "src/standalone-worker.ts", "test/unit/worker.test.ts"]
 }

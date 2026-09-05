@@ -48,7 +48,7 @@ The page-side state is not tab-local. User interfaces should clearly communicate
 
 Browsers may terminate an idle Service Worker and start it again later. Because the core package has no persistence, a restarted worker returns to its initial disabled and empty state.
 
-A test harness, application controller, or DevTools extension that needs restoration must store state separately and reapply it after reconnecting.
+A test harness or application controller that needs restoration must store state separately and reapply it after reconnecting.
 
 Stateful middleware counters are never persisted.
 

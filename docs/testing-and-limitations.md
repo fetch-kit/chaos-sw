@@ -70,7 +70,7 @@ The core package deliberately does not:
 - provide a configuration editor
 - capture or display requests and responses
 
-Use the browser Network panel for request inspection. Persistence and YAML editing belong to the separate DevTools extension.
+Use the browser Network panel for request inspection. Persistence and configuration editing are the responsibility of the surrounding application or test harness.
 
 ## Production Use
 

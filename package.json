@@ -28,7 +28,9 @@
     "dev": "tsup --watch",
     "build": "tsup",
     "test": "npm run test:ci",
-    "test:ci": "npm run build && playwright test",
+    "test:unit": "vitest run",
+    "test:e2e": "npm run build && playwright test",
+    "test:ci": "npm run test:unit && npm run test:e2e",
     "test:browser": "npm run build && playwright test test/service-worker.spec.ts test/package-build.spec.ts test/init.spec.ts",
     "test:node": "playwright test test/node-compat.spec.ts",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json",
@@ -52,7 +54,8 @@
     "prettier": "^3.9.6",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
-    "vite": "^7.1.4"
+    "vite": "^7.1.4",
+    "vitest": "^5.0.0"
   },
   "repository": {
     "type": "git",
