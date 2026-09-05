@@ -2,6 +2,7 @@
 
 export default defineConfig({
   testDir: './test',
+  testMatch: '**/*.spec.ts',
   timeout: 15_000,
   fullyParallel: false,
   workers: 1,

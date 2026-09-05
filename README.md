@@ -40,6 +40,8 @@ npx chaos-sw init public
 
 The resulting `public/chaos-sw.js` must be served from the root if you want it to control the entire origin.
 
+`init` copies the worker asset rather than linking it, so re-run the command after upgrading the package to keep the copy in sync.
+
 ## Quick Start
 
 ```ts
@@ -93,6 +95,8 @@ chaos-sw accepts the same `ChaosConfig` shape exported by `@fetchkit/chaos-fetch
 - Absolute URL routes match one exact normalized origin.
 - Global middleware runs before matching route middleware.
 
+A Service Worker sees every request in its scope, so `global` middleware also applies to navigation, HTML, CSS, images, and scripts, not just the API calls your application makes. This is a wider blast radius than the same configuration has in `chaos-fetch`. Prefer `routes` when you want to target application traffic, and recover from an over-broad rule with a hard reload, which bypasses the worker.
+
 See the [chaos-fetch middleware documentation](https://github.com/fetch-kit/chaos-fetch#middleware-primitives) for the built-in middleware options.
 
 ## Comparison with MSW
@@ -134,7 +138,7 @@ See [Existing Service Worker Integration](./docs/integration.md) for ordering an
 
 ## State and Scope
 
-Configuration and middleware counters live in Service Worker memory. A newly started worker is disabled and has an empty configuration. Your application, test harness, or future DevTools extension must reapply desired state after a worker restart.
+Configuration and middleware counters live in Service Worker memory. A newly started worker is disabled and has an empty configuration. Your application or test harness must reapply desired state after a worker restart.
 
 State is shared across every controlled tab. Enabling, disabling, applying a config, or resetting a scenario from one tab affects all tabs controlled by that registration.
 
@@ -151,7 +155,6 @@ Detailed guides live in [docs/index.md](./docs/index.md):
 
 - Intended for local development and testing, not production traffic
 - Does not persist configuration or middleware state
-- Does not include the DevTools extension
 - Does not capture request or response bodies
 - Subject to normal browser CORS and Service Worker scope rules
 - Only structured-cloneable configuration can cross from a page to the worker
@@ -160,9 +163,14 @@ Detailed guides live in [docs/index.md](./docs/index.md):
 
 ```sh
 npm run typecheck
-npm test
+npm run test:unit
+npm run test:e2e
 npm run build
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md). Security issues should be reported privately as described in [SECURITY.md](./SECURITY.md).
 
 ## Join the Community
 

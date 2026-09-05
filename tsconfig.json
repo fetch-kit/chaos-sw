@@ -9,5 +9,6 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node", "@playwright/test"]
   },
-  "include": ["src/index.ts", "src/protocol.ts", "test", "vite.config.ts", "playwright.config.ts", "tsup.config.ts"]
+  "include": ["src/index.ts", "src/protocol.ts", "test", "vite.config.ts", "vitest.config.ts", "playwright.config.ts", "tsup.config.ts"],
+  "exclude": ["test/unit/worker.test.ts"]
 }
