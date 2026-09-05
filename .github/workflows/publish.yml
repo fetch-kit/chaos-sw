@@ -1,0 +1,103 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - '!.changeset/**'
+
+permissions: read-all
+
+jobs:
+  check-version:
+    name: Check if version changed
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        with:
+          fetch-depth: 2
+
+      - name: Check if package.json version changed
+        id: check
+        run: |
+          CURRENT_VERSION=$(jq -r .version package.json)
+          PREVIOUS_VERSION=$(git show HEAD^:package.json | jq -r .version)
+          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+  publish:
+    name: Build & Publish
+    needs: check-version
+    if: needs.check-version.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Generate app token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ vars.AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.AUTOMATION_APP_KEY }}
+          owner: ${{ github.repository_owner }}
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm run test:ci
+
+      - name: Setup Node.js for publish
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+
+      - name: Get package info
+        id: package
+        run: |
+          VERSION=$(jq -r .version package.json)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create git tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ steps.package.outputs.version }}" -m "Release v${{ steps.package.outputs.version }}"
+          git push origin "v${{ steps.package.outputs.version }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3
+        with:
+          tag_name: v${{ steps.package.outputs.version }}
+          generate_release_notes: true
+          token: ${{ steps.app-token.outputs.token }}
