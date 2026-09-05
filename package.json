@@ -1,6 +1,6 @@
 {
   "name": "@fetchkit/chaos-sw",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Configurable chaos middleware for browser requests through a Service Worker",
   "type": "module",
   "sideEffects": false,
