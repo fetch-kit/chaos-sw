@@ -1,3 +1,9 @@
+[![npm version](https://img.shields.io/npm/v/@fetchkit/chaos-sw.svg?style=flat-square)](https://www.npmjs.com/package/@fetchkit/chaos-sw)
+[![npm downloads](https://img.shields.io/npm/dm/@fetchkit/chaos-sw.svg?style=flat-square)](https://www.npmjs.com/package/@fetchkit/chaos-sw)
+[![GitHub stars](https://img.shields.io/github/stars/fetch-kit/chaos-sw?style=flat-square)](https://github.com/fetch-kit/chaos-sw/stargazers)
+[![CI](https://github.com/fetch-kit/chaos-sw/actions/workflows/ci.yaml/badge.svg)](https://github.com/fetch-kit/chaos-sw/actions/workflows/ci.yaml)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/fetch-kit/chaos-sw/badge)](https://scorecard.dev/viewer/?uri=github.com/fetch-kit/chaos-sw)
+
 # chaos-sw
 
 > Part of the **[fetch-kit ecosystem](https://fetchkit.org)** - production-ready fetch utilities and chaos-testing tools.
