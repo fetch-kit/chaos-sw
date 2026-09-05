@@ -1,0 +1,43 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 10
+    groups:
+      typescript:
+        patterns:
+          - 'typescript'
+          - '@types/*'
+          - 'tsup'
+      testing:
+        patterns:
+          - '@playwright/*'
+          - 'vite'
+      linting:
+        patterns:
+          - 'eslint'
+          - '@eslint/*'
+          - '@typescript-eslint/*'
+          - 'eslint-config-prettier'
+          - 'prettier'
+      release-tooling:
+        patterns:
+          - '@changesets/*'
+          - 'husky'
+      runtime:
+        patterns:
+          - '@fetchkit/chaos-fetch'
+
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - '*'
