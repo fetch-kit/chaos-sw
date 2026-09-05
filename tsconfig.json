@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "types": ["node", "@playwright/test"]
+  },
+  "include": ["src/index.ts", "src/protocol.ts", "test", "vite.config.ts", "playwright.config.ts", "tsup.config.ts"]
+}
